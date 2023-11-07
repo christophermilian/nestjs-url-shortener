@@ -1,5 +1,3 @@
-<p align="center">A basic cat service using <a href="http://nodejs.org" target="_blank">Node.js</a> for creating and getting cat objects.</p>
-
 ## Description
 
 A [Nest](https://github.com/nestjs/nest) based url shortener written in TypeScript.
