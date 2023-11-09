@@ -2,6 +2,12 @@
 
 A [Nest](https://github.com/nestjs/nest) based url shortener written in TypeScript.
 
+## System Notes
+Since this is a simple project, the backend does not address the following:
+- Scalability
+- Key collision
+- Caching
+
 ## Installation
 
 ```bash
