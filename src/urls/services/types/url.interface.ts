@@ -1,4 +1,3 @@
-export type ShortUrl = {
-  id_short: string;
-  longUrl?: string;
+export type OriginalUrl = {
+  longUrl: string;
 };

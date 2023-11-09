@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ShortUrl } from './types/url.interface';
+import { OriginalUrl } from './types/url.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Url } from '../models/url.model';
@@ -11,16 +11,15 @@ export class UrlService {
   /**
    * Gets the full stored URL given the short id
    * @param input string
-   * @returns A promise of a ShortUrl: id_short and longUrl
+   * @returns A promise of an OriginalUrl: longUrl
    */
-  async getFullUrl(input: string): Promise<ShortUrl> {
+  async getLongUrl(input: string): Promise<OriginalUrl> {
     try {
       const result = await this.urlModel.findOne({ id_short: input });
       if (result == null) {
         throw new Error(`No record found for id ${input}`);
       }
       return {
-        id_short: result.id_short,
         longUrl: result.longUrl,
       };
     } catch (err) {
@@ -33,11 +32,11 @@ export class UrlService {
   }
 
   /**
-   * Creates and saves a shortened url by saving a generated suffix and the original link
+   * Creates and saves a shortened url given the original url
    * @param input string
-   * @returns A promise of a ShortUrl: id_short and longUrl
+   * @returns A promise of a OriginalUrl: longUrl
    */
-  async createShortUrl(input: string): Promise<ShortUrl> {
+  async createShortUrl(input: string): Promise<OriginalUrl> {
     try {
       const specialId = this.createShortId();
       const result = await this.urlModel.create({
@@ -45,7 +44,6 @@ export class UrlService {
         longUrl: input,
       });
       return {
-        id_short: result.id_short,
         longUrl: result.longUrl,
       };
     } catch (err) {

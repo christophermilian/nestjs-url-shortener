@@ -1,8 +1,13 @@
 export interface CreateShortUrlInput {
   longUrl: string;
+  authKey?: string;
 }
 
-export interface UrlResponse {
-  id_short: string;
-  longUrl?: string;
+export interface GetFullUrlInput {
+  shortUrl: string;
+  authKey?: string;
+}
+
+export type UrlResponse = { 
+  longUrl: string;
 }
