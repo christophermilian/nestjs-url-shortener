@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export interface IUrl {
-  shortSuffix: string;
+  short_url_id: string;
   longUrl: string;
 }
 
@@ -11,7 +11,7 @@ export type UrlDocument = HydratedDocument<IUrl>;
 @Schema()
 export class Url {
   @Prop({ required: true })
-  id_short: string;
+  short_url_id: string;
 
   @Prop({ required: true })
   longUrl: string;

@@ -10,12 +10,12 @@ export class UrlService {
 
   /**
    * Gets the full stored URL given the short id
-   * @param input string
+   * @param input The short url id
    * @returns A promise of an OriginalUrl: longUrl
    */
   async getLongUrl(input: string): Promise<OriginalUrl> {
     try {
-      const result = await this.urlModel.findOne({ id_short: input });
+      const result = await this.urlModel.findOne({ short_url_id: input });
       if (result == null) {
         throw new Error(`No record found for id ${input}`);
       }
@@ -33,14 +33,14 @@ export class UrlService {
 
   /**
    * Creates and saves a shortened url given the original url
-   * @param input string
+   * @param input The long url string
    * @returns A promise of a OriginalUrl: longUrl
    */
   async createShortUrl(input: string): Promise<OriginalUrl> {
     try {
       const specialId = this.createShortId();
       const result = await this.urlModel.create({
-        shortSuffix: specialId,
+        short_url_id: specialId,
         longUrl: input,
       });
       return {
