@@ -15,12 +15,12 @@ export class UrlService {
    */
   async getLongUrl(input: string): Promise<OriginalUrl> {
     try {
-      const result = await this.urlModel.findOne({ short_url_id: input });
+      const result = await this.urlModel.findOne({ url_code: input });
       if (result == null) {
         throw new Error(`No record found for id ${input}`);
       }
       return {
-        longUrl: result.longUrl,
+        longUrl: result.long_url
       };
     } catch (err) {
       console.error(err);
@@ -38,13 +38,17 @@ export class UrlService {
    */
   async createShortUrl(input: string): Promise<OriginalUrl> {
     try {
+      const baseURL = 'http://localhost:3000'
       const specialId = this.createShortId();
+      // TODO: Consider using nanoid for code generation
+      const shortUrl = `${baseURL}/${specialId}`
       const result = await this.urlModel.create({
-        short_url_id: specialId,
-        longUrl: input,
+        url_code: specialId,
+        short_url: shortUrl,
+        long_url: input,
       });
       return {
-        longUrl: result.longUrl,
+        shortUrl: result.short_url,
       };
     } catch (err) {
       console.error(err);

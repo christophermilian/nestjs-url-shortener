@@ -1,3 +1,4 @@
 export type OriginalUrl = {
-  longUrl: string;
+  shortUrl?: string;
+  longUrl?: string;
 };

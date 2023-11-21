@@ -1,8 +1,8 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
-import { CreateShortUrlInput, GetFullUrlInput, UrlResponse } from './types/url.types';
+import { Controller, Post, Get, Body, HttpCode, Param, Res } from '@nestjs/common';
+import { CreateShortUrlInput, UrlResponse } from './types/url.types';
 import { UrlService } from '../services/url.service';
 
-@Controller('urls')
+@Controller()
 export class UrlController {
   constructor(private urlService: UrlService) {}
   /**
@@ -10,15 +10,13 @@ export class UrlController {
    * @param input Object of unique_id: string, authKey?: string
    * @returns A promise of UrlResponse: id_short, long_id
    */
-  @Post('get-url')
+  @Get(':id')
   @HttpCode(308)
   async getLongUrl(
-      @Body() input: GetFullUrlInput,
+      @Param("id") input: string, @Res() res 
     ): Promise<UrlResponse> {
-    const result = await this.urlService.getLongUrl(input.shortUrl);
-    return {
-      longUrl: result.longUrl,
-    };
+    const result = await this.urlService.getLongUrl(input);
+    return res.redirect(result.longUrl)
   }
 
   /**
@@ -32,7 +30,7 @@ export class UrlController {
   ): Promise<UrlResponse> {
     const result = await this.urlService.createShortUrl(input.longUrl);
     return {
-      longUrl: result.longUrl,
+      shortUrl: result.shortUrl,
     };
   }
 }

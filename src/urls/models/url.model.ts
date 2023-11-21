@@ -2,8 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export interface IUrl {
-  short_url_id: string;
-  longUrl: string;
+  url_code: string;
+  short_url: string;
+  long_url: string;
 }
 
 export type UrlDocument = HydratedDocument<IUrl>;
@@ -11,10 +12,13 @@ export type UrlDocument = HydratedDocument<IUrl>;
 @Schema()
 export class Url {
   @Prop({ required: true })
-  short_url_id: string;
+  url_code: string;
 
   @Prop({ required: true })
-  longUrl: string;
+  short_url: string;
+
+  @Prop({ required: true })
+  long_url: string;
 }
 
 export const UrlSchema = SchemaFactory.createForClass(Url);

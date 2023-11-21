@@ -1,6 +1,6 @@
 {
   "name": "url-shortnener",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A URL shortnener",
   "author": "Christopher Milian",
   "private": true,
