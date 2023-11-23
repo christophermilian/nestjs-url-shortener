@@ -1,12 +1,23 @@
 ## Description
 
-A [Nest](https://github.com/nestjs/nest) based url shortener written in TypeScript.
+A [Nest](https://github.com/nestjs/nest) based url shortener written in TypeScript and leveraging MongoDB for storage.
 
-## System Notes
-Since this is a simple project, the backend does not address the following:
-- Scalability
-- Key collision
-- Caching
+## System Overview
+![alt text](./imgs/project_system_diagram.png)
+
+## Available Endpoints
+
+1. **POST**: http://localhost:3000/create-url
+    
+    Payload: 
+    ```
+    {
+    "longUrl": "https://www.linkedin.com/in/christophermilian/"
+    }
+    ```
+
+2. **GET**: http://localhost:3000/{generatedCode}
+- Must be entered in a browser for proper redirection
 
 ## Installation
 
