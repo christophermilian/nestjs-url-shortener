@@ -3,10 +3,43 @@ import { OriginalUrl } from './types/url.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Url } from '../models/url.model';
+import isUrl = require("is-url")
 
 @Injectable()
 export class UrlService {
   constructor(@InjectModel(Url.name) private urlModel: Model<Url>) {}
+
+  /**
+   * Creates and saves a shortened url given the original url
+   * @param input The long url string
+   * @returns A promise of a OriginalUrl: longUrl
+   */
+  async createShortUrl(input: string): Promise<OriginalUrl> {
+    try {
+      const check = isUrl(input);
+      if(!check){
+        throw new Error("The given URL is invalid.");
+      }
+      const baseURL = 'http://localhost:3000';
+      const specialId = this.createShortId();
+      // TODO: Consider using nanoid for code generation
+      const shortUrl = `${baseURL}/${specialId}`
+      const result = await this.urlModel.create({
+        url_code: specialId,
+        short_url: shortUrl,
+        long_url: input,
+      });
+      return {
+        shortUrl: result.short_url,
+      };
+    } catch (err) {
+      console.error(err);
+      throw new HttpException(
+        'The service could not create the shortened URL.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 
   /**
    * Gets the full stored URL given the short id
@@ -27,34 +60,6 @@ export class UrlService {
       throw new HttpException(
         'A link was not found given the id.',
         HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  /**
-   * Creates and saves a shortened url given the original url
-   * @param input The long url string
-   * @returns A promise of a OriginalUrl: longUrl
-   */
-  async createShortUrl(input: string): Promise<OriginalUrl> {
-    try {
-      const baseURL = 'http://localhost:3000'
-      const specialId = this.createShortId();
-      // TODO: Consider using nanoid for code generation
-      const shortUrl = `${baseURL}/${specialId}`
-      const result = await this.urlModel.create({
-        url_code: specialId,
-        short_url: shortUrl,
-        long_url: input,
-      });
-      return {
-        shortUrl: result.short_url,
-      };
-    } catch (err) {
-      console.error(err);
-      throw new HttpException(
-        'The service could not create the shortened URL.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
